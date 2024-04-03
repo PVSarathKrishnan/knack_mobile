@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "668992767253",
+    "project_id": "knack---the-learning-platform",
+    "storage_bucket": "knack---the-learning-platform.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:668992767253:android:bc610a58d72484610f151c",
+        "android_client_info": {
+          "package_name": "com.example.knack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnz9E5KFOMHLJoTcIta8bEIS4YN-Q-f1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
