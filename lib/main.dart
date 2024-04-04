@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:knack/firebase_options.dart';
-import 'package:knack/view/screens/profile/profile_build.dart';
+import 'package:knack/view/screens/bottom_navigation_bar.dart';
+import 'package:knack/view/screens/collections.dart';
+import 'package:knack/view/screens/login/login_screen.dart';
 import 'package:knack/view/screens/signup/signup_screen.dart';
 
 void main() async {
@@ -19,10 +21,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(useMaterial3: false),
+      theme: ThemeData(
+          useMaterial3: false,
+          appBarTheme: AppBarTheme(
+            backgroundColor: g,
+            centerTitle: true,
+          )),
       debugShowCheckedModeBanner: false,
       title: 'Knack',
-      home: BuildProfile(),
+      home: SignUpScreen(),
     );
   }
 }

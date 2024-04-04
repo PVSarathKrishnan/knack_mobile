@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:knack/services/auth_service.dart';
+import 'package:knack/view/screens/bottom_navigation_bar.dart';
 import 'package:knack/view/screens/homescreen/home_screen.dart';
 import 'package:knack/view/screens/login/login_screen.dart';
-import 'package:knack/view/screens/profile/collections.dart';
+import 'package:knack/view/screens/collections.dart';
+import 'package:knack/view/screens/profile/profile_build.dart';
 import 'package:knack/view/style/text_style.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -166,8 +168,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 width: 350,
                 height: 60,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color:g),
+                    borderRadius: BorderRadius.circular(15), color: g),
                 child: Center(
                     child: Text(
                   "Sign Up",
@@ -255,7 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => BuildProfile(),
         ));
   }
 

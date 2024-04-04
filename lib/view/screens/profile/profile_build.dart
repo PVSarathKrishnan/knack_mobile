@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:knack/view/screens/profile/collections.dart';
+import 'package:knack/view/screens/collections.dart';
 import 'package:knack/view/style/text_style.dart';
 import 'package:lottie/lottie.dart';
 

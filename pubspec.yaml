@@ -34,7 +34,9 @@ dependencies:
   flutter:
     sdk: flutter
   google_fonts: ^6.2.1
+  google_nav_bar: ^5.0.6
   google_sign_in: ^6.2.1
+  line_icons: ^2.0.3
   lottie: ^3.1.0
 
 dev_dependencies:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:knack/services/auth_service.dart';
 import 'package:knack/view/screens/homescreen/home_screen.dart';
-import 'package:knack/view/screens/profile/collections.dart';
+import 'package:knack/view/screens/collections.dart';
 import 'package:knack/view/screens/signup/signup_screen.dart';
 import 'package:knack/view/style/text_style.dart';
 
