@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:knack/view/screens/signup_screen.dart';
+import 'package:knack/services/auth_service.dart';
+import 'package:knack/view/screens/homescreen/home_screen.dart';
+import 'package:knack/view/screens/profile/collections.dart';
+import 'package:knack/view/screens/signup/signup_screen.dart';
 import 'package:knack/view/style/text_style.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,6 +14,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _auth = AuthService();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -50,6 +54,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextFormField(
                       controller: emailController,
+                      validator: _validateEmail,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
@@ -69,8 +75,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextFormField(
                       obscureText: _isHidden,
-                      obscuringCharacter: "*",
                       controller: passwordController,
+                      validator: _validatePassword,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      obscuringCharacter: "*",
                       decoration: InputDecoration(
                         suffix: InkWell(
                             onTap: _togglePasswordView,
@@ -92,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: _login,
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
@@ -103,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 60,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Color(0XFF24FF00)),
+                    color:g),
                 child: Center(
                     child: Text(
                   "Login",
@@ -114,6 +122,44 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(
               height: 3,
+            ),
+            Text(
+              "or",
+              style: text_style_n,
+            ),
+            SizedBox(
+              height: 3,
+            ),
+            ElevatedButton(
+              onPressed: _googleSignin,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                padding: EdgeInsets.zero,
+              ),
+              child: Container(
+                width: 350,
+                height: 60,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.black),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Sign in with Google  ",
+                      style: text_style_n.copyWith(
+                          fontSize: 20, fontWeight: FontWeight.w900),
+                    ),
+                    Image.asset(
+                      "lib/assets/glogo.png",
+                      height: 30,
+                      width: 30,
+                    )
+                  ],
+                ),
+              ),
             ),
             SizedBox(
               height: 9,
@@ -141,5 +187,53 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  _googleSignin() {
+    AuthService.signInWithGoogle(context: context);
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+    final emailRegExp = RegExp(
+      r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
+    );
+    if (!emailRegExp.hasMatch(value)) {
+      return 'Invalid email address';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password cannot be empty';
+    }
+    final passwordRegExp = RegExp(
+      r'^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$#.*])[A-Za-z\d@$#.*]{6,}$',
+    );
+    if (!passwordRegExp.hasMatch(value)) {
+      return 'Password must include alphabet, number, and special characters';
+    }
+    return null;
+  }
+
+  _gotoHome() {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => HomeScreen(),
+    ));
+  }
+
+  _login() async {
+    if (_formKey.currentState!.validate()) {
+      final user = await _auth.signInUserWithEmailAndPassword(
+          emailController.text, passwordController.text);
+      print(user);
+      if (user != null) {
+        print("success");
+        _gotoHome();
+      }
+    }
   }
 }

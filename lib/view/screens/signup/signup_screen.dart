@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:knack/services/auth_service.dart';
-import 'package:knack/view/screens/home_screen.dart';
-import 'package:knack/view/screens/login_screen.dart';
+import 'package:knack/view/screens/homescreen/home_screen.dart';
+import 'package:knack/view/screens/login/login_screen.dart';
+import 'package:knack/view/screens/profile/collections.dart';
 import 'package:knack/view/style/text_style.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -21,6 +22,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _isHidden = true;
   bool _isHiddenC = true;
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+    final emailRegExp = RegExp(
+      r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
+    );
+    if (!emailRegExp.hasMatch(value)) {
+      return 'Invalid email address';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password cannot be empty';
+    }
+    final passwordRegExp = RegExp(
+      r'^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$#.*])[A-Za-z\d@$#.*]{6,}$',
+    );
+    if (!passwordRegExp.hasMatch(value)) {
+      return 'Password must include alphabet, number, and special characters';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,31 +70,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text("Name", style: text_style_n),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      controller: nameController,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        fillColor: Colors.white,
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
                     Text("Email", style: text_style_n),
                     SizedBox(
                       height: 5,
                     ),
                     TextFormField(
                       controller: emailController,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: _validateEmail,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
@@ -85,9 +96,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       height: 5,
                     ),
                     TextFormField(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscureText: _isHidden,
                       obscuringCharacter: "*",
                       controller: passwordController,
+                      validator: _validatePassword,
                       decoration: InputDecoration(
                         suffix: InkWell(
                             onTap: _togglePasswordView,
@@ -113,8 +126,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     TextFormField(
                       obscureText: _isHiddenC,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscuringCharacter: "*",
                       controller: cPasswordController,
+                      validator: (value) {
+                        if (value != passwordController.text) {
+                          return 'Passwords do not match';
+                        }
+                        return null;
+                      },
                       decoration: InputDecoration(
                         suffix: InkWell(
                             onTap: _togglePasswordViewForConfirmPassword,
@@ -147,7 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 60,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: Color(0XFF24FF00)),
+                    color:g),
                 child: Center(
                     child: Text(
                   "Sign Up",
@@ -184,14 +204,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Sign up with Google  ",
+                      "Sign in with Google  ",
                       style: text_style_n.copyWith(
                           fontSize: 20, fontWeight: FontWeight.w900),
                     ),
-                    Image.network(
-                        height: 40,
-                        width: 40,
-                        "https://pngimg.com/uploads/google/small/google_PNG19635.png")
+                    Image.asset(
+                      "lib/assets/glogo.png",
+                      height: 30,
+                      width: 30,
+                    )
                   ],
                 ),
               ),
@@ -230,18 +251,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
-  _signUp() async {
-    final user = await _auth.createUserWithEmailAndPassword(
-        emailController.text, passwordController.text);
-    print(user);
-    if (user != null) {
-      print("success");
+  _goToHome() {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ));
+  }
 
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ));
+  _signUp() async {
+    if (_formKey.currentState!.validate()) {
+      final user = await _auth.createUserWithEmailAndPassword(
+          emailController.text, passwordController.text);
+      print(user);
+      if (user != null) {
+        print("success");
+        _goToHome();
+      }
     }
   }
 }

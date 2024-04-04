@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:knack/firebase_options.dart';
-import 'package:knack/view/screens/signup_screen.dart';
+import 'package:knack/view/screens/profile/profile_build.dart';
+import 'package:knack/view/screens/signup/signup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(useMaterial3: false),
       debugShowCheckedModeBanner: false,
       title: 'Knack',
-      home: SignUpScreen(),
+      home: BuildProfile(),
     );
   }
 }
