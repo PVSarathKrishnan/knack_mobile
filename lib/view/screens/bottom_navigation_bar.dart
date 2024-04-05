@@ -8,21 +8,21 @@ import 'package:knack/view/screens/homescreen/home_screen.dart'; // Import Cours
 import 'package:knack/view/screens/profile/profile_screen.dart';
 import 'package:line_icons/line_icons.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+class BottomNavBarScreen extends StatefulWidget {
+  const BottomNavBarScreen({Key? key}) : super(key: key);
 
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  _BottomNavBarScreenState createState() => _BottomNavBarScreenState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   int _selectedIndex = 0; // Track the selected tab index
 
   final List<Widget> _screens = [
     HomeScreen(),
     CourseScreen(),
     ChatScreen(),
-    ProfileScreen(user: ,)
+    // ProfileScreen(user: ,)
   ];
 
   @override

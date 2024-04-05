@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knack/services/auth_service.dart';
+import 'package:knack/view/screens/bottom_navigation_bar.dart';
 import 'package:knack/view/screens/homescreen/home_screen.dart';
 import 'package:knack/view/screens/collections.dart';
 import 'package:knack/view/screens/signup/signup_screen.dart';
@@ -35,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 90,
+              height: 190,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 25),
@@ -123,47 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 3,
             ),
-            Text(
-              "or",
-              style: text_style_n,
-            ),
-            SizedBox(
-              height: 3,
-            ),
-            ElevatedButton(
-              onPressed: _googleSignin,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                padding: EdgeInsets.zero,
-              ),
-              child: Container(
-                width: 350,
-                height: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.black),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Sign in with Google  ",
-                      style: text_style_n.copyWith(
-                          fontSize: 20, fontWeight: FontWeight.w900),
-                    ),
-                    Image.asset(
-                      "lib/assets/glogo.png",
-                      height: 30,
-                      width: 30,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 9,
-            ),
+           
             InkWell(
               onTap: () {
                 Navigator.pushReplacement(
@@ -189,9 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  _googleSignin() {
-    AuthService.signInWithGoogle(context: context);
-  }
 
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
@@ -221,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _gotoHome() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => HomeScreen(),
+      builder: (context) => BottomNavBarScreen(),
     ));
   }
 

@@ -19,12 +19,14 @@ class AuthService {
 
   Future<User?> signInUserWithEmailAndPassword(
       String email, String password) async {
+    print(email);
     try {
       final cred = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      print(cred.user!.displayName);
       return cred.user;
-    } catch (e) {
-      print("wrong");
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
     }
     return null;
   }
@@ -41,7 +43,7 @@ class AuthService {
   static Future<User?> signInWithGoogle({required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
-
+    print("");
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
     final GoogleSignInAccount? googleSignInAccount =
@@ -86,14 +88,17 @@ class AuthService {
 
       return user;
     }
+    return null;
   }
+
   static SnackBar customSnackBar({required String content}) {
-  return SnackBar(
-    backgroundColor: Colors.black,
-    content: Text(
-      content,
-      style: TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
-    ),
-  );
-}
+    return SnackBar(
+      backgroundColor: Colors.black,
+      content: Text(
+        content,
+        style: TextStyle(color: Colors.redAccent, letterSpacing: 0.5),
+      ),
+    );
+  }
+
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knack/services/auth_service.dart';
-import 'package:knack/view/screens/bottom_navigation_bar.dart';
-import 'package:knack/view/screens/homescreen/home_screen.dart';
+
 import 'package:knack/view/screens/login/login_screen.dart';
 import 'package:knack/view/screens/collections.dart';
 import 'package:knack/view/screens/profile/profile_build.dart';
@@ -59,7 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: 90,
+              height: 150,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 25),
@@ -176,50 +175,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       fontSize: 22, fontWeight: FontWeight.w900),
                 )),
               ),
-            ),
-            SizedBox(
-              height: 3,
-            ),
-            Text(
-              "or",
-              style: text_style_n,
-            ),
-            SizedBox(
-              height: 3,
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                padding: EdgeInsets.zero,
-              ),
-              child: Container(
-                width: 350,
-                height: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.black),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Sign in with Google  ",
-                      style: text_style_n.copyWith(
-                          fontSize: 20, fontWeight: FontWeight.w900),
-                    ),
-                    Image.asset(
-                      "lib/assets/glogo.png",
-                      height: 30,
-                      width: 30,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 9,
             ),
             InkWell(
               onTap: () {

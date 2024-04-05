@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:knack/view/screens/bottom_navigation_bar.dart';
 import 'package:knack/view/screens/collections.dart';
 import 'package:knack/view/style/text_style.dart';
 import 'package:lottie/lottie.dart';
 
-class BuildProfile extends StatelessWidget {
+class BuildProfile extends StatefulWidget {
   BuildProfile({super.key});
 
+  @override
+  State<BuildProfile> createState() => _BuildProfileState();
+}
+
+class _BuildProfileState extends State<BuildProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +104,7 @@ class BuildProfile extends StatelessWidget {
                     height: 40,
                   ),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: _goToHome,
                     style: ElevatedButton.styleFrom(
                       elevation: 25,
                       shape: RoundedRectangleBorder(
@@ -134,6 +140,12 @@ class BuildProfile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _goToHome() {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => BottomNavBarScreen(),
+    ));
   }
 
   void _showAvatarSelectionDialog(BuildContext context) {
