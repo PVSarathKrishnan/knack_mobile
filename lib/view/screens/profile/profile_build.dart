@@ -14,6 +14,8 @@ class BuildProfile extends StatefulWidget {
 class _BuildProfileState extends State<BuildProfile> {
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(0XFFF1F1F1),
       body: SingleChildScrollView(

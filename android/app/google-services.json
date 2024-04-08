@@ -12,7 +12,20 @@
           "package_name": "com.example.knack"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "668992767253-jugmmq1gpe94j1k9k77jmv0gdgrm6eoq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.knack",
+            "certificate_hash": "a298ff2ceb9def63b2fd38787bc8212013c458da"
+          }
+        },
+        {
+          "client_id": "668992767253-6c7gbpu7df6bhtgqopmubp8718qnphqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAnz9E5KFOMHLJoTcIta8bEIS4YN-Q-f1s"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "668992767253-6c7gbpu7df6bhtgqopmubp8718qnphqi.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "668992767253-g39gonku5qajj6774h8trbdncl9fipn8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.knack"
+              }
+            }
+          ]
         }
       }
     }

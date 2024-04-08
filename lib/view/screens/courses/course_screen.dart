@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knack/view/style/text_style.dart';
+import 'package:knack/view/widgets/under_construction_widget.dart';
 
 class CourseScreen extends StatelessWidget {
   const CourseScreen({super.key});
@@ -10,10 +11,16 @@ class CourseScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Course"),
       ),
-       body: Center(
-        child: Text(
-          'This is Course Page',
-          style: text_style_h,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'This is Course Page',
+              style: text_style_h,
+            ),
+            UCWidget
+          ],
         ),
       ),
     );

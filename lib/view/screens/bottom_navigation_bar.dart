@@ -16,14 +16,21 @@ class BottomNavBarScreen extends StatefulWidget {
 }
 
 class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 0; // Track the selected tab index
 
-  final List<Widget> _screens = [
-    HomeScreen(),
-    CourseScreen(),
-    ChatScreen(),
-    // ProfileScreen(user: ,)
-  ];
+  List<Widget> _screens = []; // Declare the list without initialization
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize _screens with user-dependent widgets
+    _screens = [
+      HomeScreen(),
+      CourseScreen(),
+      ProfileScreen(user: user!),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +67,8 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
                 text: "Courses",
               ),
               GButton(
-                icon: LineIcons.telegram,
-                text: "Chat",
-              ),
-              GButton(
-                icon: LineIcons.personEnteringBooth,
-                text: "Profile",
+                icon: Icons.person_2_outlined,
+                text: "profile",
               ),
             ],
           ),

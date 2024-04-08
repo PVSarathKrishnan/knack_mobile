@@ -2,9 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:knack/firebase_options.dart';
 import 'package:knack/view/screens/bottom_navigation_bar.dart';
-import 'package:knack/view/screens/chat/choise/choiseScreen.dart';
+import 'package:knack/view/screens/choise/google_register.dart';
+import 'package:knack/view/screens/choise/login_signup_screen.dart';
 import 'package:knack/view/screens/collections.dart';
 import 'package:knack/view/screens/login/login_screen.dart';
+import 'package:knack/view/screens/main_page.dart';
 import 'package:knack/view/screens/signup/signup_screen.dart';
 
 void main() async {
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
           )),
       debugShowCheckedModeBanner: false,
       title: 'Knack',
-      home: LoginSignupPage(),
+      home: MainPage(),
     );
   }
 }

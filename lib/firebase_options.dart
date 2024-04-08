@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '668992767253',
     projectId: 'knack---the-learning-platform',
     storageBucket: 'knack---the-learning-platform.appspot.com',
+    androidClientId: '668992767253-jugmmq1gpe94j1k9k77jmv0gdgrm6eoq.apps.googleusercontent.com',
+    iosClientId: '668992767253-g39gonku5qajj6774h8trbdncl9fipn8.apps.googleusercontent.com',
     iosBundleId: 'com.example.knack',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '668992767253',
     projectId: 'knack---the-learning-platform',
     storageBucket: 'knack---the-learning-platform.appspot.com',
+    androidClientId: '668992767253-jugmmq1gpe94j1k9k77jmv0gdgrm6eoq.apps.googleusercontent.com',
+    iosClientId: '668992767253-gs69lkth4sm5co263qf6p44php7iur3c.apps.googleusercontent.com',
     iosBundleId: 'com.example.knack.RunnerTests',
   );
 }
