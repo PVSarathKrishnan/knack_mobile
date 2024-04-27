@@ -1,13 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
+import 'package:knack/data/repositories/course_repo.dart';
 import 'package:knack/firebase_options.dart';
-import 'package:knack/view/screens/bottom_navigation_bar.dart';
-import 'package:knack/view/screens/choise/google_register.dart';
-import 'package:knack/view/screens/choise/login_signup_screen.dart';
-import 'package:knack/view/screens/collections.dart';
-import 'package:knack/view/screens/login/login_screen.dart';
-import 'package:knack/view/screens/main_page.dart';
-import 'package:knack/view/screens/signup/signup_screen.dart';
+import 'package:knack/presentation/view/screens/collections.dart';
+import 'package:knack/presentation/view/screens/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,16 +21,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-          useMaterial3: false,
-          appBarTheme: AppBarTheme(
-            backgroundColor: g,
-            centerTitle: true,
-          )),
-      debugShowCheckedModeBanner: false,
-      title: 'Knack',
-      home: MainPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => FetchCourseBloc(CourseRepo()),
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+            primaryColor:g,
+            colorScheme: ColorScheme(
+                brightness: Brightness.light,
+                primary:g,
+                onPrimary: Color.fromARGB(255, 0, 0, 0),
+                secondary: Colors.black,
+                onSecondary: Colors.black26,
+                error: Colors.red,
+                onError: const Color.fromARGB(255, 255, 17, 0),
+                background: const Color.fromARGB(255, 214, 214, 214),
+                onBackground: Colors.grey,
+                surface:g,
+                onSurface: Colors.black),
+            useMaterial3: false),
+        debugShowCheckedModeBanner: false,
+        title: 'Knack',
+        home: MainPage(),
+      ),
     );
   }
 }
