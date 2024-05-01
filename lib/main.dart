@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
 import 'package:knack/data/repositories/course_repo.dart';
 import 'package:knack/firebase_options.dart';
+import 'package:knack/presentation/view/screens/choise/login_signup_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 
@@ -29,23 +30,23 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         theme: ThemeData(
-            primaryColor:g,
+            primaryColor: g,
             colorScheme: ColorScheme(
                 brightness: Brightness.light,
-                primary:g,
-                onPrimary: Color.fromARGB(255, 0, 0, 0),
-                secondary: Colors.black,
-                onSecondary: Colors.black26,
+                primary: g,
+                onPrimary: Color.fromARGB(255, 255, 255, 255),
+                secondary: g,
+                onSecondary: Color.fromARGB(255, 255, 255, 255),
                 error: Colors.red,
                 onError: const Color.fromARGB(255, 255, 17, 0),
                 background: const Color.fromARGB(255, 214, 214, 214),
                 onBackground: Colors.grey,
-                surface:g,
+                surface: g,
                 onSurface: Colors.black),
             useMaterial3: false),
         debugShowCheckedModeBanner: false,
         title: 'Knack',
-        home: MainPage(),
+        home: LoginSignupPage(),
       ),
     );
   }

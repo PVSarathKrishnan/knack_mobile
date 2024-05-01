@@ -146,7 +146,7 @@ class _BuildProfileState extends State<BuildProfile> {
 
   _goToHome() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => BottomNavBarScreen(),
+      builder: (context) => BNBPage(),
     ));
   }
 

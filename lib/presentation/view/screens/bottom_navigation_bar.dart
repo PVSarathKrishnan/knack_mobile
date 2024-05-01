@@ -1,21 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:knack/presentation/view/screens/chat/chat_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/course_screen.dart';
 import 'package:knack/presentation/view/screens/homescreen/home_screen.dart'; // Import CourseScreen
 import 'package:knack/presentation/view/screens/profile/profile_screen.dart';
 import 'package:line_icons/line_icons.dart';
 
-class BottomNavBarScreen extends StatefulWidget {
-  const BottomNavBarScreen({Key? key}) : super(key: key);
+class BNBPage extends StatefulWidget {
+  const BNBPage({Key? key}) : super(key: key);
 
   @override
-  _BottomNavBarScreenState createState() => _BottomNavBarScreenState();
+  _BNBPageState createState() => _BNBPageState();
 }
 
-class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
+class _BNBPageState extends State<BNBPage> {
   User? user = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 0; // Track the selected tab index
 
@@ -43,7 +42,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
           color: g,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
           child: GNav(
             tabBackgroundColor: Colors.black,
             activeColor: g,

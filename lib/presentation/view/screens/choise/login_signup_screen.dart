@@ -196,7 +196,7 @@ class LoginSignupPage extends StatelessWidget {
     // Navigate to the home page
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+      MaterialPageRoute(builder: (context) => BNBPage()),
     );
   }
 

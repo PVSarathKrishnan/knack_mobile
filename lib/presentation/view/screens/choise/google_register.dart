@@ -149,7 +149,7 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
     // Navigate to the home page
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => BottomNavBarScreen()),
+      MaterialPageRoute(builder: (context) => BNBPage()),
     );
   }
 }
