@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
+import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/courses/course_details_screen.dart';
 import 'package:knack/presentation/view/screens/courses/widgets/course_card.dart';
 
@@ -37,7 +38,9 @@ class CourseScreen extends StatelessWidget {
             );
           } else {
             return Center(
-              child: CircularProgressIndicator(),
+              child: LoadingWidget(
+                option: 2,
+              ),
             ); // Placeholder for loading state
           }
         },

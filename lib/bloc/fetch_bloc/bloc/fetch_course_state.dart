@@ -40,12 +40,12 @@ class MyCoursesErrorState extends FetchCourseState {}
 
 class MyCoursesLoadedState extends FetchCourseState {
   final List<BookingModel> myCourseList;
-  // final List<SubscriptionModel> subsList;
+  // final List<SubscriptionModel> courseList;
   final UserModel userList;
 
   const MyCoursesLoadedState(
       {required this.myCourseList,
-      // required this.subsList,
+      // required this.courseList,
       required this.userList});
   @override
   List<Object> get props => [myCourseList, userList];

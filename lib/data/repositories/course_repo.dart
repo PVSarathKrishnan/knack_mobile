@@ -100,9 +100,10 @@ class CourseRepo {
 
   //user's courses
 
-  Future<List<BookingModel>> myCourses(String uid) async {
+  Future<List<BookingModel>> getMyCourses(String uid) async {
     List<BookingModel> myCourseList = [];
     try {
+      print("called this et my courses");
       final dataset = await FirebaseFirestore.instance
           .collection("bookings")
           .where('user_id', isEqualTo: uid)
@@ -120,6 +121,16 @@ class CourseRepo {
           user_id: data['user_id'],
           courseDetails: data['courseDetails'],
         );
+
+// Print statements inside a block
+        print('course_id: ${data['course_id']}');
+        print('course_title: ${data['course_title']}');
+        print('course_photo: ${data['course_photo']}');
+        print('booking_amount: ${data['booking_amount']}');
+        print('booking_id: ${data['booking_id']}');
+        print('date: ${data['date'].toString()}');
+        print('user_id: ${data['user_id']}');
+        print('courseDetails: ${data['courseDetails']}');
 
         myCourseList.add(myCourses);
       }

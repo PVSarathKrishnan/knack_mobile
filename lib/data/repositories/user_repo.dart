@@ -6,25 +6,36 @@ import 'package:knack/data/models/user_model.dart';
 class UserRepo {
   Future<UserModel> getUser() async {
     try {
+      print("user 1");
       User? user = FirebaseAuth.instance.currentUser;
-      final data = await FirebaseFirestore.instance
+      print("user 2");
+      print(user!.uid);
+      final dataset = await FirebaseFirestore.instance
           .collection("users")
-          .doc(user!.uid)
+          .doc(user.uid)
           .get();
-
-      final u = data.data();
-
+      print("user 3   " + user.uid);
+      final user1 = dataset.data();
+      print("user 4 ;" + user1.toString());
       final users = UserModel(
-          id: u!["id"], name: u["name"], email: u["email"], age: u["age"]);
-
+          id: user1!["id"],
+          name: user1['name'],
+          email: user1['email'],
+          age: user1['age']);
+      print("user 5 id :" + user.uid);
       return users;
     } on FirebaseException catch (e) {
       if (kDebugMode) {
         print("failed with error ${e.code} : ${e.message}");
       }
       return UserModel(
-          id: "", name: "", email: "", age: "",);
+        id: "",
+        name: "",
+        email: "",
+        age: "",
+      );
     } catch (e) {
+      print("errorrrrrrrrrrrrrr");
       throw Exception(e.toString());
     }
   }

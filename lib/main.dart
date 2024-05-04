@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
 import 'package:knack/data/repositories/course_repo.dart';
+import 'package:knack/data/repositories/user_repo.dart';
 import 'package:knack/firebase_options.dart';
 import 'package:knack/presentation/view/screens/choise/login_signup_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
-import 'package:knack/presentation/view/screens/main_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FetchCourseBloc(CourseRepo()),
+          create: (context) => FetchCourseBloc(CourseRepo(),UserRepo()),
         )
       ],
       child: MaterialApp(

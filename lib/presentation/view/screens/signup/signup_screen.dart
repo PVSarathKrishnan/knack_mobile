@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
@@ -20,7 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController cPasswordController = TextEditingController();
-
+  bool _signupLoading = false;
   bool _isHidden = true;
   bool _isHiddenC = true;
   @override
@@ -250,7 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: signUp,
+                onPressed: _signupLoading ? () {} : signUp,
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
@@ -262,12 +263,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15), color: g),
                   child: Center(
-                      child: Text(
-                    "Sign Up",
-                    style: text_style_n
-                        .copyWith(fontWeight: FontWeight.bold)
-                        .copyWith(fontSize: 22, fontWeight: FontWeight.w900),
-                  )),
+                      child: _signupLoading
+                          ? LoadingWidget(option: 1)
+                          : Text(
+                              "Sign Up",
+                              style: text_style_n
+                                  .copyWith(fontWeight: FontWeight.bold)
+                                  .copyWith(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w900),
+                            )),
                 ),
               ),
               SizedBox(
@@ -315,11 +320,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future signUp() async {
-    //Authentication 
+    //Authentication
     try {
+      setState(() {
+        _signupLoading = true;
+      });
       if (_formKey.currentState!.validate()) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);  
+            email: emailController.text, password: passwordController.text);
       }
     } on FirebaseAuthException catch (e) {
       showDialog(
@@ -339,11 +347,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future addUserDetails(String name, int age, String email) async {
-    await FirebaseFirestore.instance.collection("users").add({
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({
+      "id": FirebaseAuth.instance.currentUser!.uid,
       "name": name,
-      "age": age,
+      "age": age.toString(),
       "email": email,
     });
     _goToHome();
+    setState(() {
+      _signupLoading = false;
+    });
   }
 }

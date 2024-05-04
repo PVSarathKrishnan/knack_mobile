@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
@@ -26,7 +28,7 @@ class _RazorPayScreenState extends State<RazorPayScreen> {
     super.initState();
   }
 
-  String? bookingID;
+  String? bookID;
   Map<String, dynamic> detail = {};
   //payment methods - success,error, external wallet
 
@@ -34,7 +36,7 @@ class _RazorPayScreenState extends State<RazorPayScreen> {
     CustomSnackBar(content: "payment success");
     context
         .read<FetchCourseBloc>()
-        .add(BookCourseEvent(data: detail, bookingId: bookingID!));
+        .add(BookCourseEvent(data: detail, bookingId: bookID!));
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
@@ -121,8 +123,29 @@ class _RazorPayScreenState extends State<RazorPayScreen> {
                         SizedBox(height: 20.0),
                         ElevatedButton(
                           onPressed: () {
-                            // Handle OK button press
-                            Navigator.of(context).pop(); // Close the dialog
+                            var options = {
+                              'key': 'rzp_test_z1FxyLMrDHTf2F',
+                              'amount':
+                                  "${(int.parse(state.specialCourseList[0].amount)) * 100}",
+                              'name': 'knack',
+                              'description': state.specialCourseList[0].title,
+                              'prefill':
+                                  '${FirebaseAuth.instance.currentUser?.email}'
+                            };
+                            var dataset = {
+                              "user_id": FirebaseAuth.instance.currentUser!.uid,
+                              "user_name":
+                                  '${FirebaseAuth.instance.currentUser!.displayName}',
+                              "course_id": state.specialCourseList[0].courseID,
+                              "course_title": state.specialCourseList[0].title,
+                              "course_photo": state.specialCourseList[0].photo,
+                              "booking_date": DateFormat("dd-MM-yyyy")
+                                  .format(DateTime.now()),
+                              "booking_amount":
+                                  "${int.parse(state.specialCourseList[0].amount)}"
+                            };
+                            bookCourse(state, dataset, options);
+                            // Navigator.of(context).pop(); // Close the dialog
                           },
                           child: Text("OK"),
                         ),
@@ -156,5 +179,46 @@ class _RazorPayScreenState extends State<RazorPayScreen> {
         );
       },
     );
+  }
+
+  void bookCourse(FetchCourseState state, Map<String, String> dataset,
+      Map<String, String> ops) async {
+    try {
+      print('try 1');
+      final courseSnapshot = await FirebaseFirestore.instance
+          .collection("courses")
+          .doc(dataset["course_id"])
+          .get();
+      print('try 2');
+      Map<String, dynamic> courseData = courseSnapshot.data() ?? {};
+      String bookingID =
+          FirebaseFirestore.instance.collection("bookings").doc().id;
+      print('try 3');
+      Map<String, dynamic> details = {
+        "booking_id": bookingID,
+        "user_id": dataset["user_id"],
+        "user_name": dataset["user_name"],
+        "date": dataset['booking_date'],
+        "course_id": dataset["course_id"],
+        "course_photo": dataset["course_photo"],
+        "course_title": dataset["course_title"],
+        "booking_amount": dataset['booking_amount'],
+        "courseDetails": courseData,
+      };
+      print('try 4');
+      var options = {
+        "key": "rzp_test_z1FxyLMrDHTf2F",
+        "amount": ops["amount"],
+        "name": ops["name"],
+        "course": ops["courses"],
+        "prefill": ops["prefill"]
+      };
+      bookID = bookingID;
+      detail = details;
+      _razorpay?.open(options);
+      print("complete success");
+    } on FirebaseException catch (e) {
+      CustomSnackBar(content: e.message.toString());
+    }
   }
 }

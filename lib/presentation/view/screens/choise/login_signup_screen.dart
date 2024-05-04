@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
 import 'package:knack/presentation/view/screens/choise/google_register.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
@@ -11,8 +12,15 @@ import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
 import 'package:lottie/lottie.dart';
 
-class LoginSignupPage extends StatelessWidget {
+class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginSignupPage> createState() => _LoginSignupPageState();
+}
+
+class _LoginSignupPageState extends State<LoginSignupPage> {
+  bool _googleLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,21 +65,27 @@ class LoginSignupPage extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.black),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Sign in with Google  ",
-                      style: text_style_n.copyWith(
-                          fontSize: 20, fontWeight: FontWeight.w900),
-                    ),
-                    Image.asset(
-                      "lib/assets/glogo.png",
-                      height: 30,
-                      width: 30,
-                    ),
-                  ],
-                ),
+                child: _googleLoading
+                    ? Center(
+                        child: LoadingWidget(
+                          option: 2,
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Sign in with Google  ",
+                            style: text_style_n.copyWith(
+                                fontSize: 20, fontWeight: FontWeight.w900),
+                          ),
+                          Image.asset(
+                            "lib/assets/glogo.png",
+                            height: 30,
+                            width: 30,
+                          ),
+                        ],
+                      ),
               ),
             ),
             SizedBox(
@@ -153,8 +167,12 @@ class LoginSignupPage extends StatelessWidget {
 
   _googleSignin(BuildContext context) async {
     try {
+      setState(() {
+        _googleLoading = true;
+      });
       // Sign in with Google
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
       if (googleUser != null) {
         // auth details from the request
         final GoogleSignInAuthentication googleAuth =
@@ -173,7 +191,9 @@ class LoginSignupPage extends StatelessWidget {
 
         // Check if the user is new
         bool userExists = await checkIfUserExists(user);
-
+        setState(() {
+          _googleLoading = false;
+        });
         if (userExists) {
           // Existing user, navigate to home
           _goToHome(context);

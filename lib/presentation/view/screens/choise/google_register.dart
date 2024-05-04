@@ -137,7 +137,11 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
   }
 
   Future addUserDetails(String name, int age, String email) async {
-    await FirebaseFirestore.instance.collection("users").add({
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({
+      'id': FirebaseAuth.instance.currentUser!.uid,
       "name": name,
       "age": age,
       "email": email,

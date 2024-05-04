@@ -172,12 +172,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: screenHeight / 15,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15), color: g),
-                  child: Center(
-                      child: Text(
-                    "Login",
-                    style: text_style_n.copyWith(
-                        fontSize: 22, fontWeight: FontWeight.w900),
-                  )),
+                  child: _isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Center(
+                          child: Text(
+                          "Login",
+                          style: text_style_n.copyWith(
+                              fontSize: 22, fontWeight: FontWeight.w900),
+                        )),
                 ),
               ),
               SizedBox(

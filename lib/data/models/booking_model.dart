@@ -15,7 +15,6 @@ class BookingModel {
       required this.booking_amount,
       required this.booking_id,
       required this.date,
-
       required this.user_id,
       required this.courseDetails});
 }

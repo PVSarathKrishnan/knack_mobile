@@ -8,13 +8,16 @@ import 'package:knack/data/models/booking_model.dart';
 import 'package:knack/data/models/course_model.dart';
 import 'package:knack/data/models/user_model.dart';
 import 'package:knack/data/repositories/course_repo.dart';
+import 'package:knack/data/repositories/user_repo.dart';
 
 part 'fetch_course_event.dart';
 part 'fetch_course_state.dart';
 
 class FetchCourseBloc extends Bloc<FetchCourseEvent, FetchCourseState> {
   CourseRepo courseRepo = CourseRepo();
-  FetchCourseBloc(this.courseRepo) : super(FetchCourseInitial()) {
+  UserRepo userRepo = UserRepo();
+  FetchCourseBloc(this.courseRepo, this.userRepo)
+      : super(FetchCourseInitial()) {
     on<FetchCourseLoadedEvent>(getCoursesfunction);
     on<SpecialCourseLoadEvent>(getSpecialCourses);
     on<SearchCourseEvent>(searchCourses);
@@ -69,13 +72,19 @@ class FetchCourseBloc extends Bloc<FetchCourseEvent, FetchCourseState> {
           .then((value) {
         debugPrint("booking successful");
       });
-    }  on FirebaseException catch(e){
+    } on FirebaseException catch (e) {
       debugPrint("bookingSubs ${e.message}");
     }
   }
 
   FutureOr<void> myCourses(
       MyCoursesLoadEvent event, Emitter<FetchCourseState> emit) async {
-        
-      }
+    final myCourses = await courseRepo.getMyCourses(event.uid);
+    final user = await userRepo.getUser();
+    if (myCourses.isEmpty) {
+      emit(MyCoursesErrorState());
+    } else {
+      emit(MyCoursesLoadedState(myCourseList: myCourses, userList: user));
+    }
+  }
 }
