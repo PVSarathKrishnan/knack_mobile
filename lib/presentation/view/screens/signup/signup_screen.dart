@@ -26,7 +26,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isHiddenC = true;
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     nameController.dispose();
     ageController.dispose();

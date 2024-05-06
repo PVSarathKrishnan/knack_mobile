@@ -5,7 +5,7 @@ import 'package:knack/presentation/view/screens/courses/widgets/payment_confirma
 
 class CourseDetailScreen extends StatelessWidget {
   final CourseModel course;
-
+  
   const CourseDetailScreen({Key? key, required this.course});
 
   @override
@@ -14,7 +14,9 @@ class CourseDetailScreen extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         elevation: 6,
-        onPressed: () => _showPrice(context),
+        onPressed: () {
+          _freeOrNot(context, course);
+        },
         splashColor: Color.fromARGB(255, 14, 171, 0),
         label: Text(
           int.parse(course.amount) == 0 ? "Enroll for free" : "Buy this course",
@@ -117,5 +119,23 @@ class CourseDetailScreen extends StatelessWidget {
         );
       },
     );
+    _goToCourse(course, context);
+  }
+
+  void _freeOrNot(BuildContext context, CourseModel course) {
+    if (int.parse(course.amount) > 0) {
+      _showPrice(context);
+    } else {
+      _goToCourse(course, context);
+    }
+  }
+
+  void _goToCourse(CourseModel course, BuildContext context) {
+    // Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => LearnCoursePage(course: ,),
+    //     ));
   }
 }
+

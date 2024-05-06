@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
-import 'package:knack/presentation/view/widgets/under_construction_widget.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;
@@ -15,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late String _userName;
   late String _userEmail;
-  late int _userAge;
+  late String _userAge;
   bool _isLoading = true;
 
   @override
@@ -134,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: InputDecoration(labelText: 'Age'),
               onChanged: (value) {
                 setState(() {
-                  _userAge = int.tryParse(value) ?? _userAge;
+                  _userAge = value;
                 });
               },
             ),

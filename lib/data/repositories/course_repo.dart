@@ -135,7 +135,7 @@ class CourseRepo {
         myCourseList.add(myCourses);
       }
     } on FirebaseException catch (e) {
-      debugPrint("expection getting my subscritpions. : ${e.message}");
+      debugPrint("expection getting my courses. : ${e.message}");
     }
     return myCourseList;
   }

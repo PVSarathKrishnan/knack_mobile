@@ -1,8 +1,6 @@
-import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:knack/data/services/auth_service.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/login/forgot_password.dart';

@@ -109,8 +109,8 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                addUserDetails(nameController.text.trim(),
-                    int.parse(ageController.text), user!.email.toString());
+                addUserDetails(nameController.text.trim(), ageController.text,
+                    user!.email.toString());
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -136,7 +136,7 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
     );
   }
 
-  Future addUserDetails(String name, int age, String email) async {
+  Future addUserDetails(String name, String age, String email) async {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)

@@ -7,6 +7,8 @@ import 'package:knack/data/repositories/user_repo.dart';
 import 'package:knack/firebase_options.dart';
 import 'package:knack/presentation/view/screens/choise/login_signup_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
+import 'package:knack/presentation/view/screens/main_page.dart';
+import 'package:knack/presentation/view/screens/profile/profile_build.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => FetchCourseBloc(CourseRepo(),UserRepo()),
+          create: (context) => FetchCourseBloc(CourseRepo(), UserRepo()),
         )
       ],
       child: MaterialApp(
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: false),
         debugShowCheckedModeBanner: false,
         title: 'Knack',
-        home: LoginSignupPage(),
+        home: MainPage(),
       ),
     );
   }

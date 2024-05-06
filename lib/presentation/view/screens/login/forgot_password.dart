@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
-import 'package:line_icons/line_icon.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key});

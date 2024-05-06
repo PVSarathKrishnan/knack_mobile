@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:knack/data/models/course_model.dart';
-import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/razor_pay.dart';
 
 class PaymentConfirmationWidget extends StatelessWidget {

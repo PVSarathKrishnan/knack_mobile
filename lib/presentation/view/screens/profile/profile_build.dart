@@ -22,12 +22,12 @@ class _BuildProfileState extends State<BuildProfile> {
         child: Column(
           children: [
             SizedBox(
-              height: 130,
+              height: screenHeight / 10,
             ),
-            LottieBuilder.asset("lib/assets/profile.json"),
+            LottieBuilder.asset("lib/assets/profile.json",width: screenWidth/2,height: screenHeight/6,),
             Text(
               "Create Profile !",
-              style: text_style_h.copyWith(fontSize: 40),
+              style: text_style_h.copyWith(fontSize: screenWidth / 12),
             ),
 
             SizedBox(
@@ -173,8 +173,7 @@ class _BuildProfileState extends State<BuildProfile> {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () {
-                    // Handle avatar selection
-                    // saveProfileData("User's Name", avatars[index]);
+                 
                     Navigator.pop(context);
                   },
                   child: CircleAvatar(

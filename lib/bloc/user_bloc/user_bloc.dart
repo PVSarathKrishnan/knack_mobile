@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:knack/data/models/user_model.dart';
 import 'package:knack/data/repositories/user_repo.dart';
-import 'package:meta/meta.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
