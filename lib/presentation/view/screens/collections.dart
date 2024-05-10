@@ -56,6 +56,4 @@ List<String> avatars = [
   "https://cdn-icons-png.freepik.com/256/1776/1776700.png?ga=GA1.1.1670387391.1711524050&",
 ];
 
-Color g = Color.fromARGB(255, 26, 196, 0);
-
-
+Color g = Color.fromARGB(255, 0, 0, 0);

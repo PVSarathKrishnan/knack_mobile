@@ -11,9 +11,7 @@ class CourseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    String truncatedDescription = course.overview.length > 10
-        ? course.overview.substring(0, 10) + '...'
-        : course.overview;
+
     return Container(
       height: screenWidth / 2.5,
       child: Card(
@@ -47,16 +45,11 @@ class CourseCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          course.title,
+                          truncateString(course.title),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          truncatedDescription,
-                          style: TextStyle(fontSize: 14),
                         ),
                         SizedBox(height: 8),
                         Text(
@@ -102,5 +95,13 @@ class CourseCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String truncateString(String input, {int maxLength = 25}) {
+    if (input.length > maxLength) {
+      return input.substring(0, maxLength) + '...';
+    } else {
+      return input;
+    }
   }
 }

@@ -5,10 +5,10 @@ import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
 import 'package:knack/data/repositories/course_repo.dart';
 import 'package:knack/data/repositories/user_repo.dart';
 import 'package:knack/firebase_options.dart';
-import 'package:knack/presentation/view/screens/choise/login_signup_screen.dart';
+
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
-import 'package:knack/presentation/view/screens/profile/profile_build.dart';
+import 'package:knack/presentation/view/screens/splash/splash1.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,14 +41,14 @@ class MyApp extends StatelessWidget {
                 onSecondary: Color.fromARGB(255, 255, 255, 255),
                 error: Colors.red,
                 onError: const Color.fromARGB(255, 255, 17, 0),
-                background: const Color.fromARGB(255, 214, 214, 214),
+                background: Color.fromARGB(255, 255, 255, 255),
                 onBackground: Colors.grey,
                 surface: g,
-                onSurface: Colors.black),
+                onSurface: const Color.fromARGB(255, 255, 255, 255)),
             useMaterial3: false),
         debugShowCheckedModeBanner: false,
         title: 'Knack',
-        home: MainPage(),
+        home: SplashScreen(),
       ),
     );
   }

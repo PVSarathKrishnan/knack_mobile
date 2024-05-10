@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:knack/data/models/booking_model.dart';
+import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   final String videoId;
+  final String chapter;
 
-  VideoPlayerPage({Key? key, required this.videoId}) : super(key: key);
+  VideoPlayerPage({Key? key, required this.videoId, required this.chapter})
+      : super(key: key);
 
   @override
   _VideoPlayerPageState createState() => _VideoPlayerPageState();
@@ -34,14 +39,22 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Video Player'),
+        title: Text(
+          widget.chapter,
+          style: text_style_h,
+        ),
       ),
       body: Center(
-        child: YoutubePlayer(
-          controller: _controller,
-          showVideoProgressIndicator: true,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            YoutubePlayer(
+              controller: _controller,
+              showVideoProgressIndicator: true,
+            ),
+          ],
         ),
       ),
     );

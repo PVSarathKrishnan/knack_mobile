@@ -1,6 +1,7 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/login/forgot_password.dart';
@@ -31,13 +32,35 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true; // Set loading state to true
     });
+
     try {
+      bool emailExists = await _checkEmailExists(); // Check if email exists
+      if (!emailExists) {
+        // If email does not exist, show a snackbar
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Color.fromARGB(255, 182, 0, 0),
+          content: Text(
+            'Email not found in database',
+            style: text_style_n,
+          ),
+        ));
+        setState(() {
+          _isLoading = false; // Set loading state back to false
+        });
+        return;
+      }
+
+      // Email exists, proceed with signing in
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text);
+        email: emailController.text.trim(),
+        password: passwordController.text,
+      );
+
       // Navigate to MainPage after successful login
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainPage()));
+        context,
+        MaterialPageRoute(builder: (context) => MainPage()),
+      );
     } on FirebaseAuthException catch (e) {
       // Handle login errors
       showDialog(
@@ -69,8 +92,11 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 190,
+              SizedBox(height: screenHeight / 10),
+              SvgPicture.asset(
+                "lib/assets/login.svg",
+                height: screenHeight / 4,
+                width: screenHeight / 4,
               ),
               Padding(
                 padding:
@@ -94,11 +120,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
+                            borderRadius: BorderRadius.circular(5)),
                         fillColor: Colors.white,
                         filled: true,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                     ),
@@ -129,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fillColor: Colors.white,
                         filled: true,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                     ),
@@ -162,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: signIn,
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(5)),
                   padding: EdgeInsets.zero,
                 ),
                 child: Container(
@@ -193,10 +219,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (context) => SignUpScreen(),
                       ));
                 },
-                child: Text(
-                  "Don't have an account ? Sign Up",
-                  style:
-                      text_style_h.copyWith(fontSize: 12, color: Colors.blue),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account ?",
+                      style: text_style_h.copyWith(
+                          fontSize: 12,
+                          color: const Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                    Text(
+                      " Sign Up",
+                      style: text_style_h.copyWith(
+                          fontSize: 12, color: Colors.blue),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -210,6 +247,21 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  Future<bool> _checkEmailExists() async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: emailController.text.trim())
+          .get();
+      // If the querySnapshot contains any documents, the email exists
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      // Handle errors, such as FirebaseExceptions or FirestoreExceptions
+      print("Error checking email existence: $e");
+      return false;
+    }
   }
 
   String? _validateEmail(String? value) {

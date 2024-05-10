@@ -68,12 +68,16 @@ class LearnCoursePage extends StatelessWidget {
                   (index) => GestureDetector(
                     onTap: () {
                       String videoLink = course.courseDetails["videos"][index];
-                      final videoID = YoutubePlayer.convertUrlToId(videoLink);
+                      final videoID = YoutubePlayer.convertUrlToId(
+                        videoLink,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              VideoPlayerPage(videoId: videoID!),
+                          builder: (context) => VideoPlayerPage(
+                            videoId: videoID!,
+                            chapter: course.courseDetails["chapters"][index],
+                          ),
                         ),
                       );
                     },

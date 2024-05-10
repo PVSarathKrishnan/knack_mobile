@@ -1,11 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:knack/data/models/booking_model.dart';
 import 'package:knack/data/models/course_model.dart';
+import 'package:knack/data/repositories/course_repo.dart';
+import 'package:knack/data/repositories/user_repo.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/widgets/payment_confirmation.dart';
+import 'package:knack/presentation/view/screens/homescreen/home_screen.dart';
 
 class CourseDetailScreen extends StatelessWidget {
   final CourseModel course;
-  
+
   const CourseDetailScreen({Key? key, required this.course});
 
   @override
@@ -119,14 +125,40 @@ class CourseDetailScreen extends StatelessWidget {
         );
       },
     );
-    _goToCourse(course, context);
+    // _goToCourse(course, context);
   }
 
   void _freeOrNot(BuildContext context, CourseModel course) {
-    if (int.parse(course.amount) > 0) {
-      _showPrice(context);
+    // current user's ID
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+    if (userId != null) {
+      CourseRepo().getMyCourses(userId).then((List<BookingModel> myCourses) {
+        // Check if the course is in the user's courses
+        bool courseBought =
+            myCourses.any((booking) => booking.course_id == course.courseID);
+
+        if (courseBought) {
+          // If the course is already in the user's courses, show a message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('You have already bought this course.'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        } else {
+          // If the course is not in the user's courses, proceed as usual
+          if (int.parse(course.amount) > 0) {
+            _showPrice(context);
+          } else {
+            _goToCourse(course, context);
+          }
+        }
+      }).catchError((error) {
+        print("Error getting user's courses: $error");
+      });
     } else {
-      _goToCourse(course, context);
+      print("User ID is null.");
     }
   }
 
@@ -134,8 +166,7 @@ class CourseDetailScreen extends StatelessWidget {
     // Navigator.pushReplacement(
     //     context,
     //     MaterialPageRoute(
-    //       builder: (context) => LearnCoursePage(course: ,),
+    //       builder: (context) => HomeScreen(),
     //     ));
   }
 }
-

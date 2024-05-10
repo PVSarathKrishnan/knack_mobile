@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
@@ -73,9 +75,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: screenHeight / 10,
-              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 40, horizontal: 25),
@@ -84,74 +83,82 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: SvgPicture.asset(
+                          "lib/assets/signup.svg",
+                          height: screenHeight / 4,
+                          width: screenHeight / 4,
+                        ),
+                      ),
                       Text("Sign Up",
                           style: text_style_h.copyWith(fontSize: 40)),
                       SizedBox(
                         height: screenHeight / 30,
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex:
-                                2, // Adjust the flex value according to your preference
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name",
-                                    style: text_style_n.copyWith(
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 5),
-                                TextFormField(
-                                  textInputAction: TextInputAction.next,
-                                  controller: nameController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(width: screenWidth / 25),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Age",
-                                    style: text_style_n.copyWith(
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 5),
-                                TextFormField(
-                                  textInputAction: TextInputAction.next,
-                                  keyboardType: TextInputType.number,
-                                  controller: ageController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
-                                  decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    fillColor: Colors.white,
-                                    filled: true,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       flex:
+                      //           2, // Adjust the flex value according to your preference
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Text("Name",
+                      //               style: text_style_n.copyWith(
+                      //                   fontWeight: FontWeight.bold)),
+                      //           SizedBox(height: 5),
+                      //           TextFormField(
+                      //             textInputAction: TextInputAction.next,
+                      //             controller: nameController,
+                      //             autovalidateMode:
+                      //                 AutovalidateMode.onUserInteraction,
+                      //             decoration: InputDecoration(
+                      //               enabledBorder: OutlineInputBorder(
+                      //                 borderRadius: BorderRadius.circular(5),
+                      //               ),
+                      //               fillColor: Colors.white,
+                      //               filled: true,
+                      //               border: OutlineInputBorder(
+                      //                 borderRadius: BorderRadius.circular(5),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     SizedBox(width: screenWidth / 25),
+                      //     Expanded(
+                      //       flex: 1,
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Text("Age",
+                      //               style: text_style_n.copyWith(
+                      //                   fontWeight: FontWeight.bold)),
+                      //           SizedBox(height: 5),
+                      //           TextFormField(
+                      //             textInputAction: TextInputAction.next,
+                      //             keyboardType: TextInputType.number,
+                      //             controller: ageController,
+                      //             autovalidateMode:
+                      //                 AutovalidateMode.onUserInteraction,
+                      //             decoration: InputDecoration(
+                      //               enabledBorder: OutlineInputBorder(
+                      //                 borderRadius: BorderRadius.circular(5),
+                      //               ),
+                      //               fillColor: Colors.white,
+                      //               filled: true,
+                      //               border: OutlineInputBorder(
+                      //                 borderRadius: BorderRadius.circular(5),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                       SizedBox(
                         height: screenHeight / 80,
                       ),
@@ -168,11 +175,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20)),
+                              borderRadius: BorderRadius.circular(5)),
                           fillColor: Colors.white,
                           filled: true,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                       ),
@@ -204,7 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fillColor: Colors.white,
                           filled: true,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                       ),
@@ -241,7 +248,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fillColor: Colors.white,
                           filled: true,
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(5),
                           ),
                         ),
                       ),
@@ -253,7 +260,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: _signupLoading ? () {} : signUp,
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.circular(5)),
                   padding: EdgeInsets.zero,
                 ),
                 child: Container(
@@ -285,10 +292,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         builder: (context) => LoginScreen(),
                       ));
                 },
-                child: Text(
-                  "Already a member ? Log in",
-                  style:
-                      text_style_h.copyWith(fontSize: 12, color: Colors.blue),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Already a member ? ",
+                      style: text_style_h.copyWith(
+                          fontSize: 12,
+                          color: const Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                    Text(
+                      "Log in",
+                      style: text_style_h.copyWith(
+                          fontSize: 12, color: Colors.blue),
+                    ),
+                  ],
                 ),
               ),
             ],

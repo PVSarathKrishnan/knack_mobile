@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
@@ -27,25 +29,31 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Image.network(
+              "https://img.freepik.com/free-vector/access-control-system-abstract-concept-vector-illustration-security-system-authorize-entry-login-credentials-electronic-access-password-passphrase-pin-verification-abstract-metaphor_335657-5746.jpg?t=st=1715238638~exp=1715242238~hmac=a337917bb3db6fcf028542ddb1a762101673e41854f3fc3205344840e2db0110&w=826",
+              height: screenHeight / 3,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Hey, Welcome to ",
-                  style: text_style_h.copyWith(fontSize: 20, letterSpacing: 3),
+                  "Hey there,",
+                  style: text_style_h.copyWith(fontSize: 22, letterSpacing: 3),
                 ),
                 Text(
-                  "Knack!",
+                  "Welcome to Knack!",
                   style: text_style_h.copyWith(
-                      fontSize: 20, letterSpacing: 3, color: Colors.deepOrange),
+                      fontSize: 22, letterSpacing: 3, color: Color(0XFFC27EEB)),
                 ),
               ],
             ),
-            Lottie.asset("lib/assets/auth.json", height: 150, width: 150),
             SizedBox(
               height: 25,
             ),
@@ -56,14 +64,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                    borderRadius: BorderRadius.circular(5)),
                 padding: EdgeInsets.zero,
               ),
               child: Container(
                 width: screenWidth - screenWidth / 7,
                 height: screenHeight / 15,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(5),
                     color: Colors.black),
                 child: _googleLoading
                     ? Center(
@@ -91,10 +99,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             SizedBox(
               height: screenHeight / 100,
             ),
-            Text(
-              "or",
-              style: text_style_n,
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                " or ",
+                style: text_style_n,
+              ),
+            ]),
             SizedBox(
               height: screenHeight / 100,
             ),
@@ -109,14 +119,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     side: BorderSide(color: g, width: 1.5),
-                    borderRadius: BorderRadius.circular(20)),
+                    borderRadius: BorderRadius.circular(5)),
                 padding: EdgeInsets.zero,
               ),
               child: Container(
                 width: screenWidth - screenWidth / 7,
                 height: screenHeight / 15,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(5),
                     color: Colors.white),
                 child: Center(
                     child: Text(
@@ -141,14 +151,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                    borderRadius: BorderRadius.circular(5)),
                 padding: EdgeInsets.zero,
               ),
               child: Container(
                 width: screenWidth - screenWidth / 7,
                 height: screenHeight / 15,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15), color: g),
+                    borderRadius: BorderRadius.circular(5), color: g),
                 child: Center(
                     child: Text(
                   'Signup',
