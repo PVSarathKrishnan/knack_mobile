@@ -60,7 +60,7 @@ class CourseCard extends StatelessWidget {
                         Text(
                           int.parse(course.amount) > 0
                               ? "₹${course.amount}"
-                              : "",
+                              : "Free",
                           style: text_style_n.copyWith(fontSize: 12),
                         ),
                       ],
@@ -74,10 +74,9 @@ class CourseCard extends StatelessWidget {
                 top: 10,
                 right: 10,
                 child: (int.parse(course.amount) > 0)
-                    ? Image.asset(
-                        "lib/assets/premium.png",
-                        height: 20,
-                        width: 20,
+                    ? Icon(
+                        Icons.workspace_premium,
+                        color: Color(0XFFC27EEB),
                       )
                     : Text(
                         "Free",

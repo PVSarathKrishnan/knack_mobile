@@ -20,10 +20,12 @@ class _CourseScreenState extends State<CourseScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screeHeight = MediaQuery.of(context).size.height;
+    double screeWidth = MediaQuery.of(context).size.width;
     context.read<FetchCourseBloc>().add(FetchCourseLoadedEvent());
 
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 237, 237, 237),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text("Courses"),
         centerTitle: true,
@@ -38,29 +40,31 @@ class _CourseScreenState extends State<CourseScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               FilterButton(
-                label: 'Below \$100',
+                label: 'Below \₹100',
                 onPressed: () {
                   setState(() {
                     selectedAmountFilter = 'below100';
                   });
                 },
+                isSelected: selectedAmountFilter == 'below100',
               ),
               FilterButton(
-                label: '\$100 - \$200',
+                label: '\₹100 - \₹200',
                 onPressed: () {
                   setState(() {
                     selectedAmountFilter = '100to200';
                   });
                 },
+                isSelected: selectedAmountFilter == '100to200',
               ),
               FilterButton(
-                label: '\$200 - \$300',
-                onPressed: () {
-                  setState(() {
-                    selectedAmountFilter = '200to300';
-                  });
-                },
-              ),
+                  label: '\₹200 - \₹300',
+                  onPressed: () {
+                    setState(() {
+                      selectedAmountFilter = '200to300';
+                    });
+                  },
+                  isSelected: selectedAmountFilter == '200to300'),
             ],
           ),
           BlocBuilder<FetchCourseBloc, FetchCourseState>(
@@ -111,10 +115,19 @@ class _CourseScreenState extends State<CourseScreen> {
                   ),
                 );
               } else {
-                return Center(
-                  child: LoadingWidget(
-                    option: 2,
-                  ),
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: screeHeight / 4,
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: LoadingWidget(
+                        option: 2,
+                      ),
+                    ),
+                  ],
                 ); // Placeholder for loading state
               }
             },
@@ -147,18 +160,71 @@ class _CourseScreenState extends State<CourseScreen> {
 class FilterButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
+  final bool isSelected;
 
   const FilterButton({
     Key? key,
     required this.label,
     required this.onPressed,
+    this.isSelected = false, // Add isSelected parameter
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isSelected
+            ? Colors.black
+            : Colors.white, // Set primary color based on isSelected
+        foregroundColor: isSelected
+            ? Colors.white
+            : Colors.black, // Set onPrimary color based on isSelected
+        side: BorderSide(
+          color: isSelected
+              ? Colors.black
+              : Colors
+                  .transparent, // Correctly set border color based on isSelected
+          width: 2.0,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
       child: Text(label),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  final TextEditingController controller;
+
+  const SearchBar({Key? key, required this.controller}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: g),
+        color: Color.fromARGB(255, 233, 233, 233),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: TextField(
+          controller: controller,
+          onChanged: (value) {
+            context
+                .read<FetchCourseBloc>()
+                .add(SearchCourseEvent(searchWord: value));
+          },
+          decoration: InputDecoration(
+            hintText: 'Search Courses',
+            border: InputBorder.none,
+            prefixIcon: Icon(Icons.search),
+          ),
+        ),
+      ),
     );
   }
 }

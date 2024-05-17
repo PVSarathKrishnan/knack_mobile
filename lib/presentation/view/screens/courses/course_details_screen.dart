@@ -16,6 +16,8 @@ class CourseDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screeHeight = MediaQuery.of(context).size.height;
+    double screeWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
@@ -32,13 +34,15 @@ class CourseDetailScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
-            expandedHeight: 200.0,
-            pinned: false,
+            expandedHeight: screeHeight / 3.0,
+            pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              // title: Container(
-              //     width: double.infinity,
-              //     decoration: BoxDecoration(color: g),
-              //     child: Text(course.title)),
+              title: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(),
+                  child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(course.title))),
               background: Image.network(
                 course.photo,
                 fit: BoxFit.cover,
@@ -60,15 +64,15 @@ class CourseDetailScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 18, color: Colors.grey),
                   ),
 
-                  SizedBox(height: 10),
-                  Text(
-                    'This course provides comprehensive knowledge on various topics. '
-                    'It consists of ${course.chapters.length} chapters covering subjects such as ${course.description.join(", ")}. '
-                    'You will learn through engaging lectures, practical examples, and hands-on exercises. '
-                    'By the end of this course, you will have a strong understanding of the subject matter '
-                    'and be well-prepared to apply your knowledge in real-world scenarios.',
-                    style: TextStyle(fontSize: 18, color: Colors.black),
-                  ),
+                  // SizedBox(height: 10),
+                  // Text(
+                  //   'This course provides comprehensive knowledge on various topics. '
+                  //   'It consists of ${course.chapters.length} chapters covering subjects such as ${course.description.join(", ")}. '
+                  //   'You will learn through engaging lectures, practical examples, and hands-on exercises. '
+                  //   'By the end of this course, you will have a strong understanding of the subject matter '
+                  //   'and be well-prepared to apply your knowledge in real-world scenarios.',
+                  //   style: TextStyle(fontSize: 18, color: Colors.black),
+                  // ),
                   // Display course chapters
                   SizedBox(height: 20),
                   Text(
@@ -101,6 +105,7 @@ class CourseDetailScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   // Display course description
                 ],
               ),

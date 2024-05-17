@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:knack/data/models/booking_model.dart';
+
 import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 

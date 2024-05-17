@@ -131,25 +131,21 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           } else if (state is MyCoursesErrorState) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: screenHeight / 4),
-                Text(
-                  "No Active Subscriptions",
-                  style: GoogleFonts.poppins(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey,
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: screenHeight / 4),
+                  Text(
+                    "You don't have any enrolled courses",
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey,
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle subscription management or viewing available courses
-                  },
-                  child: Text("Manage Subscriptions"),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             return Center(child: LoadingWidget(option: 2));

@@ -57,3 +57,4 @@ List<String> avatars = [
 ];
 
 Color g = Color.fromARGB(255, 0, 0, 0);
+Color v = Color(0XFFC27EEB);

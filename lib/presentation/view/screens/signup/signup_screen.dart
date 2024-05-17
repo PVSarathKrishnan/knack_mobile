@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
+import 'package:knack/presentation/view/screens/profile/profile_build.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -18,8 +17,6 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController ageController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController cPasswordController = TextEditingController();
@@ -29,8 +26,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void dispose() {
     super.dispose();
-    nameController.dispose();
-    ageController.dispose();
+
     emailController.dispose();
     passwordController.dispose();
     cPasswordController.dispose();
@@ -96,69 +92,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(
                         height: screenHeight / 30,
                       ),
-                      // Row(
-                      //   children: [
-                      //     Expanded(
-                      //       flex:
-                      //           2, // Adjust the flex value according to your preference
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           Text("Name",
-                      //               style: text_style_n.copyWith(
-                      //                   fontWeight: FontWeight.bold)),
-                      //           SizedBox(height: 5),
-                      //           TextFormField(
-                      //             textInputAction: TextInputAction.next,
-                      //             controller: nameController,
-                      //             autovalidateMode:
-                      //                 AutovalidateMode.onUserInteraction,
-                      //             decoration: InputDecoration(
-                      //               enabledBorder: OutlineInputBorder(
-                      //                 borderRadius: BorderRadius.circular(5),
-                      //               ),
-                      //               fillColor: Colors.white,
-                      //               filled: true,
-                      //               border: OutlineInputBorder(
-                      //                 borderRadius: BorderRadius.circular(5),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //     SizedBox(width: screenWidth / 25),
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           Text("Age",
-                      //               style: text_style_n.copyWith(
-                      //                   fontWeight: FontWeight.bold)),
-                      //           SizedBox(height: 5),
-                      //           TextFormField(
-                      //             textInputAction: TextInputAction.next,
-                      //             keyboardType: TextInputType.number,
-                      //             controller: ageController,
-                      //             autovalidateMode:
-                      //                 AutovalidateMode.onUserInteraction,
-                      //             decoration: InputDecoration(
-                      //               enabledBorder: OutlineInputBorder(
-                      //                 borderRadius: BorderRadius.circular(5),
-                      //               ),
-                      //               fillColor: Colors.white,
-                      //               filled: true,
-                      //               border: OutlineInputBorder(
-                      //                 borderRadius: BorderRadius.circular(5),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
                       SizedBox(
                         height: screenHeight / 80,
                       ),
@@ -257,7 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               ElevatedButton(
-                onPressed: _signupLoading ? () {} : signUp,
+                onPressed: _signupLoading ? () {} : goToBuildProfile,
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5)),
@@ -336,15 +269,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ));
   }
 
-  Future signUp() async {
-    //Authentication
+  goToBuildProfile() async {
     try {
       setState(() {
         _signupLoading = true;
       });
       if (_formKey.currentState!.validate()) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: emailController.text, password: passwordController.text);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => BuildProfile(
+        email: emailController.text,
+        password: passwordController.text,
+      ),
+    ));
       }
     } on FirebaseAuthException catch (e) {
       showDialog(
@@ -355,27 +291,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             );
           });
     }
-    print(nameController.text);
-    print(ageController.text);
-    print(emailController.text);
-    //Add user details
-    addUserDetails(nameController.text.trim(), int.parse(ageController.text),
-        emailController.text.trim());
-  }
-
-  Future addUserDetails(String name, int age, String email) async {
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .set({
-      "id": FirebaseAuth.instance.currentUser!.uid,
-      "name": name,
-      "age": age.toString(),
-      "email": email,
-    });
-    _goToHome();
-    setState(() {
-      _signupLoading = false;
-    });
+   
   }
 }

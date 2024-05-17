@@ -45,7 +45,7 @@ class _BNBPageState extends State<BNBPage> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
           child: GNav(
             tabBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
-            activeColor: g,
+            activeColor:  Color(0XFFC27EEB),
             color: Color.fromARGB(255, 144, 144, 144),
             gap: 9,
             rippleColor: Colors.white.withOpacity(.4),

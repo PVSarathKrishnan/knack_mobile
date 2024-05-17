@@ -12,7 +12,7 @@ import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/screens/signup/signup_screen.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
-import 'package:lottie/lottie.dart';
+
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({Key? key}) : super(key: key);

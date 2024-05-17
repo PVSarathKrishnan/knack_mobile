@@ -5,9 +5,8 @@ import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
 import 'package:knack/data/repositories/course_repo.dart';
 import 'package:knack/data/repositories/user_repo.dart';
 import 'package:knack/firebase_options.dart';
-
 import 'package:knack/presentation/view/screens/collections.dart';
-import 'package:knack/presentation/view/screens/main_page.dart';
+import 'package:knack/presentation/view/screens/profile/profile_build.dart';
 import 'package:knack/presentation/view/screens/splash/splash1.dart';
 
 void main() async {
@@ -49,6 +48,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Knack',
         home: SplashScreen(),
+        // home: BuildProfile(
+        //   email: "hakeem@gmail.con",
+        //   password: "hakeem@123",
+        // ),
       ),
     );
   }

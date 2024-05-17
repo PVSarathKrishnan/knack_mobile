@@ -22,8 +22,8 @@ class LoadingWidget extends StatelessWidget {
         break;
     }
     return Lottie.asset(assetPath,
-        width: 100,
-        height: 100,
+        width: 40,
+        height: 40,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high);
   }

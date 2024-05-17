@@ -3,13 +3,13 @@ class UserModel {
   String name;
   String email;
   String age;
-  // String profession;
+  String avatar;
 
   UserModel({
     required this.id,
     required this.name,
     required this.email,
     required this.age,
-    // required this.profession
+    required this.avatar
   });
 }

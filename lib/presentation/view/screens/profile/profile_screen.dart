@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:knack/presentation/utils/loading_widget.dart';
+import 'package:knack/presentation/view/style/text_style.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;
@@ -14,6 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String _userName;
   late String _userEmail;
   late String _userAge;
+  late String _avatar;
   bool _isLoading = true;
 
   @override
@@ -35,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _userName = userData['name'];
         _userEmail = userEmail;
         _userAge = userData['age'];
+        _avatar = userData['avatar'];
         _isLoading = false;
       });
     } else {
@@ -46,36 +50,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '$_userName\'s Profile',
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 20.0),
-                  _buildProfileItem('Name', _userName),
-                  _buildProfileItem('Email', _userEmail),
-                  _buildProfileItem('Age', _userAge.toString()),
-                  SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () => _editProfile(context),
-                    child: Text('Edit Profile'),
-                  ),
-                ],
-              ),
-            ),
-    );
+        appBar: AppBar(
+          title: Text('Profile'),
+        ),
+        body: _isLoading
+            ? Center(
+                child: LoadingWidget(
+                option: 1,
+              ))
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: screenHeight / 8,
+                    ),
+                    Center(
+                      child: Container(
+                        width: screenWidth - screenWidth / 4,
+                        height: screenHeight / 2,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                "https://i.pinimg.com/564x/56/e8/31/56e831d1ca7f230b57ef96bd564c18a8.jpg",
+                              ),
+                              fit: BoxFit.cover),
+                          border: Border.all(
+                              color: const Color.fromARGB(255, 57, 57, 57)
+                                  .withOpacity(.4)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                                width: screenWidth / 5,
+                                child: Image.network(_avatar)),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Container(
+                                width: screenWidth / 2.5,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                                255, 57, 57, 57)
+                                            .withOpacity(.4)),
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    _userName,
+                                    style: text_style_n,
+                                  ),
+                                )),
+                            SizedBox(height: 20.0),
+                            _buildProfileItem('Email', _userEmail),
+                            _buildProfileItem('Age', _userAge.toString()),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ));
   }
 
   Widget _buildProfileItem(String label, String value) {
@@ -188,3 +230,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 }
+/* SingleChildScrollView(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    '$_userName\'s Profile',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                  ),
+                  Image.network(_avatar),
+                  SizedBox(height: 20.0),
+                  _buildProfileItem('Name', _userName),
+                  _buildProfileItem('Email', _userEmail),
+                  _buildProfileItem('Age', _userAge.toString()),
+                  SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () => _editProfile(context),
+                    child: Text('Edit Profile'),
+                  ),
+                ],
+              ),
+            ), */

@@ -4,6 +4,8 @@ import 'package:knack/data/models/booking_model.dart';
 import 'package:draggable_home/draggable_home.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/video_player.dart';
+import 'package:knack/presentation/view/style/text_style.dart';
+import 'package:tap_to_expand/tap_to_expand.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LearnCoursePage extends StatelessWidget {
@@ -13,6 +15,8 @@ class LearnCoursePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
     return DraggableHome(
       leading: IconButton(
         onPressed: () {
@@ -63,53 +67,58 @@ class LearnCoursePage extends StatelessWidget {
               SizedBox(height: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  course.courseDetails["chapters"].length,
-                  (index) => GestureDetector(
-                    onTap: () {
-                      String videoLink = course.courseDetails["videos"][index];
-                      final videoID = YoutubePlayer.convertUrlToId(
-                        videoLink,
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => VideoPlayerPage(
-                            videoId: videoID!,
-                            chapter: course.courseDetails["chapters"][index],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 230, 230, 230),
-                            borderRadius: BorderRadius.circular(12)),
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: course.courseDetails["chapters"].length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          String videoLink =
+                              course.courseDetails["videos"][index];
+                          final videoID = YoutubePlayer.convertUrlToId(
+                            videoLink,
+                          );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VideoPlayerPage(
+                                videoId: videoID!,
+                                chapter: course.courseDetails["chapters"]
+                                    [index],
+                              ),
+                            ),
+                          );
+                        },
                         child: ListTile(
-                          title: Text(
-                            course.courseDetails["chapters"][index],
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          title: TapToExpand(
+                            width: screenWidth,
+                            content: Column(
+                              children: [
+                                Text(
+                                  course.courseDetails["description"][index],
+                                  style: text_style_n.copyWith(
+                                    color: const Color.fromARGB(
+                                        255, 255, 255, 255),
+                                  ),
+                                )
+                              ],
+                            ),
+                            title: Text(
+                              course.courseDetails["chapters"][index],
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 255, 255, 255),
+                              ),
                             ),
                           ),
                           splashColor: g,
-                          subtitle: Text(
-                            course.courseDetails["description"][index],
-                            maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
-                ),
+                ],
               ),
             ],
           ),
