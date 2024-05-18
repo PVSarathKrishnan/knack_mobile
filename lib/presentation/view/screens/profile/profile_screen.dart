@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
+import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -68,51 +71,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       height: screenHeight / 8,
                     ),
                     Center(
-                      child: Container(
-                        width: screenWidth - screenWidth / 4,
-                        height: screenHeight / 2,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                "https://i.pinimg.com/564x/56/e8/31/56e831d1ca7f230b57ef96bd564c18a8.jpg",
-                              ),
-                              fit: BoxFit.cover),
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 57, 57, 57)
-                                  .withOpacity(.4)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                                width: screenWidth / 5,
-                                child: Image.network(_avatar)),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                                width: screenWidth / 2.5,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: const Color.fromARGB(
-                                                255, 57, 57, 57)
-                                            .withOpacity(.4)),
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    _userName,
-                                    style: text_style_n,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: screenWidth - screenWidth / 4,
+                            height: screenHeight / 2,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                    "https://i.pinimg.com/564x/2e/68/c0/2e68c0a20083097aeb2c5db03ab4a0d6.jpg",
                                   ),
-                                )),
-                            SizedBox(height: 20.0),
-                            _buildProfileItem('Email', _userEmail),
-                            _buildProfileItem('Age', _userAge.toString()),
-                          ],
-                        ),
+                                  fit: BoxFit.cover),
+                              border: Border.all(
+                                  color: const Color.fromARGB(255, 57, 57, 57)
+                                      .withOpacity(.4)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 25,
+                                ),
+                                Container(
+                                    width: screenWidth / 5,
+                                    child: Image.network(_avatar)),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Name",
+                                      style: text_style_n,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextViewWidget(
+                                        screenWidth: screenWidth,
+                                        userName: _userName),
+                                  ],
+                                ),
+                                SizedBox(height: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Email",
+                                      style: text_style_n,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextViewWidget(
+                                        screenWidth: screenWidth,
+                                        userName: _userEmail),
+                                  ],
+                                ),
+                                SizedBox(height: 10.0),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Age",
+                                      style: text_style_n,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    TextViewWidget(
+                                        screenWidth: screenWidth,
+                                        userName: _userAge),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                              height: screenHeight / 9,
+                              bottom: screenHeight / 3,
+                              right: screenWidth / 4,
+                              child: InkWell(
+                                onTap: () {
+                                  _editProfile(context);
+                                },
+                                child: CircleAvatar(
+                                    maxRadius: 15,
+                                    backgroundColor: g.withOpacity(.8),
+                                    child: Icon(
+                                      Icons.edit,
+                                      size: 20,
+                                    )),
+                              )),
+                        ],
                       ),
                     ),
                   ],
@@ -151,6 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         TextEditingController(text: _userName);
     final TextEditingController ageController =
         TextEditingController(text: _userAge.toString());
+    final String avatar = _avatar;
 
     showDialog(
       context: context,
@@ -159,6 +212,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Column(
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      _showAvatarSelectionDialog(context);
+                      
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Image.network(
+                          _avatar,
+                          fit: BoxFit.cover,
+                          width: 90,
+                          height: 90,
+                        ))),
+              ],
+            ),
+            SizedBox(
+              height: 2,
+            ),
+            Text(
+              "choose an avatar",
+              style: text_style_h.copyWith(fontSize: 15),
+            ),
             TextField(
               controller: nameController,
               decoration: InputDecoration(labelText: 'Name'),
@@ -216,6 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             .update({
           'name': _userName,
           'age': _userAge,
+          'avatar': _avatar,
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -229,7 +309,97 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SnackBar(content: Text('Error updating profile: $error')));
     }
   }
+
+ void _showAvatarSelectionDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      String selectedAvatar = _avatar;
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              color: Colors.transparent,
+              height: 400,
+              padding: EdgeInsets.all(16),
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: avatars.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedAvatar = avatars[index];
+                      });
+                      this.setState(() {
+                        _avatar = avatars[index];
+                      });
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(avatars[index]),
+                      radius: 30,
+                      child: selectedAvatar == avatars[index]
+                          ? Icon(Icons.check, color: Colors.white)
+                          : null,
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      );
+    },
+  );
 }
+
+}
+
+class TextViewWidget extends StatelessWidget {
+  const TextViewWidget({
+    super.key,
+    required this.screenWidth,
+    required String userName,
+  }) : _userName = userName;
+
+  final double screenWidth;
+  final String _userName;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints:
+          BoxConstraints(minWidth: screenWidth / 2, maxWidth: screenWidth / 2),
+      child: IntrinsicWidth(
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: const Color.fromARGB(255, 57, 57, 57).withOpacity(.4)),
+              borderRadius: BorderRadius.circular(12)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                _userName,
+                style: text_style_n.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /* SingleChildScrollView(
               padding: EdgeInsets.all(16.0),
               child: Column(

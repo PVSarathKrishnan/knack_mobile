@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
-import 'package:knack/presentation/view/screens/choise/login_signup_screen.dart';
+import 'package:knack/presentation/view/screens/choice/login_signup_screen.dart';
 
 
 class MainPage extends StatelessWidget {

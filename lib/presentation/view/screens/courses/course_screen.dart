@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
@@ -6,6 +7,8 @@ import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/course_details_screen.dart';
 import 'package:knack/presentation/view/screens/courses/widgets/course_card.dart';
+import 'package:knack/presentation/view/style/text_style.dart';
+import 'package:lottie/lottie.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -16,7 +19,7 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   final searchController = TextEditingController();
-  String? selectedAmountFilter;
+  String? selectedAmountFilter = "All";
 
   @override
   Widget build(BuildContext context) {
@@ -36,61 +39,92 @@ class _CourseScreenState extends State<CourseScreen> {
             padding: const EdgeInsets.all(8.0),
             child: SearchBar(controller: searchController),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FilterButton(
-                label: 'Below \₹100',
-                onPressed: () {
-                  setState(() {
-                    selectedAmountFilter = 'below100';
-                  });
-                },
-                isSelected: selectedAmountFilter == 'below100',
-              ),
-              FilterButton(
-                label: '\₹100 - \₹200',
-                onPressed: () {
-                  setState(() {
-                    selectedAmountFilter = '100to200';
-                  });
-                },
-                isSelected: selectedAmountFilter == '100to200',
-              ),
-              FilterButton(
-                  label: '\₹200 - \₹300',
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                FilterButton(
+                    label: 'All Courses',
+                    onPressed: () {
+                      setState(() {
+                        selectedAmountFilter = 'All';
+                      });
+                    },
+                    isSelected: selectedAmountFilter == 'All'),
+                SizedBox(
+                  width: screeWidth / 30,
+                ),
+                FilterButton(
+                  label: 'Below \₹100',
                   onPressed: () {
                     setState(() {
-                      selectedAmountFilter = '200to300';
+                      selectedAmountFilter = 'below100';
                     });
                   },
-                  isSelected: selectedAmountFilter == '200to300'),
-            ],
+                  isSelected: selectedAmountFilter == 'below100',
+                ),
+                SizedBox(
+                  width: screeWidth / 30,
+                ),
+                FilterButton(
+                  label: '\₹100 - \₹200',
+                  onPressed: () {
+                    setState(() {
+                      selectedAmountFilter = '100to200';
+                    });
+                  },
+                  isSelected: selectedAmountFilter == '100to200',
+                ),
+                SizedBox(
+                  width: screeWidth / 30,
+                ),
+                FilterButton(
+                    label: '\₹200 - \₹300',
+                    onPressed: () {
+                      setState(() {
+                        selectedAmountFilter = '200to300';
+                      });
+                    },
+                    isSelected: selectedAmountFilter == '200to300'),
+              ],
+            ),
           ),
           BlocBuilder<FetchCourseBloc, FetchCourseState>(
             builder: (context, state) {
               if (state is FetchCourseLoadedState) {
                 final filteredCourses = _filterCourses(state.courseList);
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: filteredCourses.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CourseDetailScreen(
-                                course: filteredCourses[index],
-                              ),
-                            ),
-                          );
-                        },
-                        child: CourseCard(course: filteredCourses[index]),
+                return _filterCourses(state.courseList).length == 0
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "No course under this section",
+                            style: text_style_n,
+                          ),
+                         
+                        ],
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: filteredCourses.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CourseDetailScreen(
+                                      course: filteredCourses[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: CourseCard(course: filteredCourses[index]),
+                            );
+                          },
+                        ),
                       );
-                    },
-                  ),
-                );
               } else if (state is SearchLoadedState) {
                 final filteredCourses =
                     _filterCourses(state.searchedCourseList);
@@ -152,6 +186,8 @@ class _CourseScreenState extends State<CourseScreen> {
               int.parse(course.amount) >= 200 &&
               int.parse(course.amount) <= 300)
           .toList();
+    } else if (selectedAmountFilter == 'All') {
+      return courses;
     }
     return courses;
   }
@@ -166,7 +202,7 @@ class FilterButton extends StatelessWidget {
     Key? key,
     required this.label,
     required this.onPressed,
-    this.isSelected = false, // Add isSelected parameter
+    this.isSelected  = false, // Add isSelected parameter
   }) : super(key: key);
 
   @override
@@ -182,10 +218,9 @@ class FilterButton extends StatelessWidget {
             : Colors.black, // Set onPrimary color based on isSelected
         side: BorderSide(
           color: isSelected
-              ? Colors.black
-              : Colors
-                  .transparent, // Correctly set border color based on isSelected
-          width: 2.0,
+              ? Colors.transparent
+              : Colors.black, // Correctly set border color based on isSelected
+          width: 1.0,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),

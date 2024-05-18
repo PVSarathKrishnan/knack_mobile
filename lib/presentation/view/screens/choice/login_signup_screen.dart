@@ -2,17 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
-import 'package:knack/presentation/view/screens/choise/google_register.dart';
+import 'package:knack/presentation/view/screens/choice/google_register.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
+import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/signup/signup_screen.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
-
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({Key? key}) : super(key: key);
@@ -180,9 +179,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       setState(() {
         _googleLoading = true;
       });
+
       // Sign in with Google
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
       if (googleUser != null) {
         // auth details from the request
         final GoogleSignInAuthentication googleAuth =
@@ -201,32 +200,47 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
         // Check if the user is new
         bool userExists = await checkIfUserExists(user);
-        setState(() {
-          _googleLoading = false;
-        });
+
         if (userExists) {
+          if (!mounted) return;
           // Existing user, navigate to home
           _goToHome(context);
           CustomSnackBar(content: "Welcome");
+          setState(() {
+            _googleLoading = false;
+          });
         } else {
+          if (!mounted) return;
           // New user, navigate to GoogleRegisterScreen
+          setState(() {
+            _googleLoading = false;
+          });
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => GoogleRegisterScreen()),
           );
         }
+      } else {
+        if (!mounted) return;
+        setState(() {
+          _googleLoading = false;
+        });
       }
     } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _googleLoading = false;
+      });
       print("Error signing in with Google: $e");
     }
   }
 
-// Navigate to home page
+  // Navigate to home page
   _goToHome(BuildContext context) {
     // Navigate to the home page
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => BNBPage()),
+      MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
+import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
 
@@ -76,16 +77,7 @@ class _BuildProfileState extends State<BuildProfile> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color.fromARGB(255, 73, 73, 73)
-                              .withOpacity(0.2), // Shadow color
-                          spreadRadius: 2, // Spread radius
-                          blurRadius: 4, // Blur radius
-                          offset:
-                              Offset(0, 2), // Shadow position, vertically down
-                        ),
-                      ],
+                    
                     ),
                     child: _selectedAvatar != null
                         ? Image.network(
@@ -190,7 +182,10 @@ class _BuildProfileState extends State<BuildProfile> {
                   height: 40,
                 ),
                 ElevatedButton(
-                  onPressed: _adduser,
+                  onPressed: () async {
+                    await _adduser;
+                    _goToHome();
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 25,
                     shape: RoundedRectangleBorder(
@@ -229,7 +224,7 @@ class _BuildProfileState extends State<BuildProfile> {
 
   _goToHome() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => BNBPage(),
+      builder: (context) => MainPage(),
     ));
   }
 

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:knack/bloc/fetch_bloc/bloc/fetch_course_bloc.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
-import 'package:knack/presentation/view/screens/choise/login_signup_screen.dart';
+import 'package:knack/presentation/view/screens/choice/login_signup_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/learn_course_screen.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
