@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -23,6 +25,7 @@ class HomeScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     // double screenWidth = MediaQuery.of(context).size.width; //
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text("Home"),
@@ -133,17 +136,24 @@ class HomeScreen extends StatelessWidget {
           } else if (state is MyCoursesErrorState) {
             return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: screenHeight / 4),
-                  Text(
-                    "You don't have any enrolled courses",
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  Column(
+                    children: [
+                      Image.network(
+                        "https://i.pinimg.com/564x/3b/16/5c/3b165c92c38143d6165b2de473860720.jpg",
+                        //https://i.pinimg.com/564x/4a/36/e1/4a36e13be90a120f4d2ee0b0b2441fb9.jpg - chat
+                        // https://i.pinimg.com/564x/c6/8a/69/c68a6998c232492b4fa5da39f1638f2a.jpg - trending courses
+                        height: screenHeight / 3,
+                        width: screenHeight / 3,
+                      ),
+                      Container(
+                        child: Text("Ready to stand out? Learn a course and land your dream job!",style: GoogleFonts.orbitron(),),
+                      ),
+                      
+                    ],
+                  )
                 ],
               ),
             );

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
+import 'package:knack/presentation/view/screens/choice/auth_bool.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
@@ -21,6 +22,7 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
   String? _selectedAvatar;
   @override
   Widget build(BuildContext context) {
+    isGoogleRegistering = true;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -148,9 +150,13 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                addUserDetails(nameController.text.trim(), ageController.text,
-                    user!.email.toString());
+              onPressed: () async {
+                await addUserDetails(
+                    nameController.text.trim(),
+                    ageController.text,
+                    user!.email.toString(),
+                    _selectedAvatar);
+                isGoogleRegistering = false;
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -176,7 +182,8 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
     );
   }
 
-  Future addUserDetails(String name, String age, String email) async {
+  Future addUserDetails(
+      String name, String age, String email, String? avatar) async {
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -185,6 +192,7 @@ class _GoogleRegisterScreenState extends State<GoogleRegisterScreen> {
       "name": name,
       "age": age,
       "email": email,
+      "avatar": avatar,
     });
     _goToHome();
   }

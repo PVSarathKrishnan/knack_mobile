@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knack/data/models/course_model.dart';
+import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 
 class CourseCard extends StatelessWidget {
@@ -87,7 +88,7 @@ class CourseCard extends StatelessWidget {
                 right: 20,
                 child: Icon(
                   Icons.navigate_next,
-                  color: Colors.green,
+                  color: g,
                   size: 30,
                 ))
           ],

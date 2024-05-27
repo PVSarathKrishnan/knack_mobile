@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:knack/presentation/view/screens/chat/chat_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/courses/course_screen.dart';
 import 'package:knack/presentation/view/screens/homescreen/home_screen.dart'; // Import CourseScreen
@@ -28,6 +29,7 @@ class _BNBPageState extends State<BNBPage> {
       HomeScreen(),
       CourseScreen(),
       ProfileScreen(user: user!),
+      ChatScreen()
     ];
   }
 
@@ -45,7 +47,7 @@ class _BNBPageState extends State<BNBPage> {
           padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15),
           child: GNav(
             tabBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
-            activeColor:  Color(0XFFC27EEB),
+            activeColor: Color(0XFFC27EEB),
             color: Color.fromARGB(255, 144, 144, 144),
             gap: 9,
             rippleColor: Colors.white.withOpacity(.4),
@@ -68,6 +70,10 @@ class _BNBPageState extends State<BNBPage> {
               GButton(
                 icon: Icons.person_2_outlined,
                 text: "profile",
+              ),
+              GButton(
+                icon: Icons.message,
+                text: "chat",
               ),
             ],
           ),

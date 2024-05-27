@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:knack/data/models/booking_model.dart';
@@ -7,6 +8,7 @@ import 'package:knack/presentation/view/screens/courses/video_player.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:tap_to_expand/tap_to_expand.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:flutter_expandable_text/flutter_expandable_text.dart';
 
 class LearnCoursePage extends StatelessWidget {
   final BookingModel course;
@@ -68,55 +70,69 @@ class LearnCoursePage extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: course.courseDetails["chapters"].length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          String videoLink =
-                              course.courseDetails["videos"][index];
-                          final videoID = YoutubePlayer.convertUrlToId(
-                            videoLink,
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VideoPlayerPage(
-                                videoId: videoID!,
-                                chapter: course.courseDetails["chapters"]
-                                    [index],
-                              ),
-                            ),
-                          );
-                        },
-                        child: ListTile(
-                          title: TapToExpand(
-                            width: screenWidth,
-                            content: Column(
-                              children: [
-                                Text(
-                                  course.courseDetails["description"][index],
-                                  style: text_style_n.copyWith(
-                                    color: const Color.fromARGB(
-                                        255, 255, 255, 255),
+                  SingleChildScrollView(
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => Divider(),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: course.courseDetails["chapters"].length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              String videoLink =
+                                  course.courseDetails["videos"][index];
+                              final videoID = YoutubePlayer.convertUrlToId(
+                                videoLink,
+                              );
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VideoPlayerPage(
+                                    videoId: videoID!,
+                                    chapter: course.courseDetails["chapters"]
+                                        [index],
+                                    description: course
+                                        .courseDetails["description"][index],
+                                    descriptions:
+                                        course.courseDetails["description"],
+                                    chapters: course.courseDetails["chapters"],
+                                    videoIds: course.courseDetails["videos"]
+                                        .map((link) =>
+                                            YoutubePlayer.convertUrlToId(link))
+                                        .toList(),
                                   ),
-                                )
-                              ],
-                            ),
-                            title: Text(
-                              course.courseDetails["chapters"][index],
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: const Color.fromARGB(255, 255, 255, 255),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Color.fromARGB(245, 245, 245, 245),
                               ),
-                            ),
-                          ),
-                          splashColor: g,
-                        ),
-                      );
-                    },
+                              child: ListTile(
+                                subtitle: ExpandableText(
+                                  course.courseDetails["description"][index],
+
+                                  readMoreText: 'Read more',
+                                  readLessText: 'Show less',
+                                  trim:
+                                      4, // Maximum number of lines to show before collapsing
+                                  style: text_style_n.copyWith(
+                                    color: v,
+                                  ),
+                                ),
+                                title: Text(
+                                  course.courseDetails["chapters"][index],
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                              ),
+                            ));
+                      },
+                    ),
                   ),
                 ],
               ),

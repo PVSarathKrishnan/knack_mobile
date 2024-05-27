@@ -6,7 +6,7 @@ import 'package:knack/data/repositories/course_repo.dart';
 import 'package:knack/data/repositories/user_repo.dart';
 import 'package:knack/firebase_options.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
-import 'package:knack/presentation/view/screens/profile/profile_build.dart';
+import 'package:knack/presentation/view/screens/signup/profile_build.dart';
 import 'package:knack/presentation/view/screens/splash/splash1.dart';
 
 void main() async {

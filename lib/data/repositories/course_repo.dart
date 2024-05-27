@@ -105,7 +105,7 @@ class CourseRepo {
     try {
       print("called this et my courses");
       final dataset = await FirebaseFirestore.instance
-          .collection("bookings")
+          .collection("bookings")// constant -
           .where('user_id', isEqualTo: uid)
           .get();
 

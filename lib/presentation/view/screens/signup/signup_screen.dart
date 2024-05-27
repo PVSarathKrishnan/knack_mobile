@@ -5,7 +5,7 @@ import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
-import 'package:knack/presentation/view/screens/profile/profile_build.dart';
+import 'package:knack/presentation/view/screens/signup/profile_build.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 
 class SignUpScreen extends StatefulWidget {

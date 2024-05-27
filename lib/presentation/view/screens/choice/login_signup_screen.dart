@@ -5,10 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:knack/presentation/utils/loading_widget.dart';
 import 'package:knack/presentation/view/screens/bottom_navigation_bar.dart';
+import 'package:knack/presentation/view/screens/choice/auth_bool.dart';
 import 'package:knack/presentation/view/screens/choice/google_register.dart';
 import 'package:knack/presentation/view/screens/collections.dart';
 import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/screens/main_page.dart';
+import 'package:knack/presentation/view/screens/signup/signup_screen.dart';
+import 'package:knack/presentation/view/style/text_style.dart';
+import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:knack/presentation/utils/loading_widget.dart';
+import 'package:knack/presentation/view/screens/choice/google_register.dart';
+import 'package:knack/presentation/view/screens/login/login_screen.dart';
 import 'package:knack/presentation/view/screens/signup/signup_screen.dart';
 import 'package:knack/presentation/view/style/text_style.dart';
 import 'package:knack/presentation/view/widgets/custom_snackbar.dart';
@@ -20,14 +31,18 @@ class LoginSignupPage extends StatefulWidget {
   State<LoginSignupPage> createState() => _LoginSignupPageState();
 }
 
+bool isGoogleRegistrationComplete = false;
+
 class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _googleLoading = false;
 
+  @override
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         toolbarHeight: 0,
       ),
@@ -57,8 +72,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               height: 25,
             ),
             ElevatedButton(
-              onPressed: () {
-                _googleSignin(context);
+              onPressed: () async {
+                isGoogleRegistering = true;
+                await _googleSignin(context);
+                isGoogleRegistering = false;
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -174,7 +191,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-  _googleSignin(BuildContext context) async {
+  Future<void> _googleSignin(BuildContext context) async {
     try {
       setState(() {
         _googleLoading = true;
@@ -182,52 +199,54 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
       // Sign in with Google
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser != null) {
-        // auth details from the request
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-
-        // Create a new credential
-        final OAuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-
-        // Sign in to Firebase
-        final UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithCredential(credential);
-        User? user = userCredential.user;
-
-        // Check if the user is new
-        bool userExists = await checkIfUserExists(user);
-
-        if (userExists) {
-          if (!mounted) return;
-          // Existing user, navigate to home
-          _goToHome(context);
-          CustomSnackBar(content: "Welcome");
-          setState(() {
-            _googleLoading = false;
-          });
-        } else {
-          if (!mounted) return;
-          // New user, navigate to GoogleRegisterScreen
-          setState(() {
-            _googleLoading = false;
-          });
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => GoogleRegisterScreen()),
-          );
-        }
-      } else {
-        if (!mounted) return;
+      if (googleUser == null) {
         setState(() {
           _googleLoading = false;
         });
+        return;
+      }
+
+      // auth details from the request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Create a new credential
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Sign in to Firebase
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      User? user = userCredential.user;
+
+      if (user == null) {
+        setState(() {
+          _googleLoading = false;
+        });
+        return;
+      }
+
+      // Check if the user is new
+      bool userExists = await checkIfUserExists(user);
+
+      setState(() {
+        _googleLoading = false;
+      });
+
+      if (!mounted) return;
+
+      if (userExists) {
+        // Existing user, navigate to GoogleRegisterScreen to complete profile
+        isGoogleRegistering = false;
+        _goToHomePage(context);
+        isGoogleRegistering = false;
+      } else {
+        // New user, navigate to GoogleRegisterScreen
+        _goToGoogleRegisterScreen(context);
       }
     } catch (e) {
-      if (!mounted) return;
       setState(() {
         _googleLoading = false;
       });
@@ -235,30 +254,33 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
   }
 
-  // Navigate to home page
-  _goToHome(BuildContext context) {
-    // Navigate to the home page
+  _goToGoogleRegisterScreen(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => GoogleRegisterScreen()),
+    );
+  }
+
+  void _goToHomePage(BuildContext context) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => MainPage()),
     );
   }
+}
 
-  Future<bool> checkIfUserExists(User? user) async {
-    if (user == null) return false;
+Future<bool> checkIfUserExists(User? user) async {
+  if (user == null) return false;
 
-    try {
-      // Retrieve user data from Firestore collection
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection("users")
-          .where("email", isEqualTo: user.email)
-          .get();
+  try {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection("users")
+        .where("email", isEqualTo: user.email)
+        .get();
 
-      // Check if any documents exist with the given email
-      return querySnapshot.docs.isNotEmpty;
-    } catch (e) {
-      print("Error checking user existence: $e");
-      return false;
-    }
+    return querySnapshot.docs.isNotEmpty;
+  } catch (e) {
+    print("Error checking user existence: $e");
+    return false;
   }
 }

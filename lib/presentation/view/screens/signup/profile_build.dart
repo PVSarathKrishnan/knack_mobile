@@ -21,7 +21,7 @@ class BuildProfile extends StatefulWidget {
 class _BuildProfileState extends State<BuildProfile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-
+  bool _loading = false;
   String? _selectedAvatar; // Variable to hold the selected avatar URL
 
   @override
@@ -77,7 +77,6 @@ class _BuildProfileState extends State<BuildProfile> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                    
                     ),
                     child: _selectedAvatar != null
                         ? Image.network(
@@ -182,10 +181,7 @@ class _BuildProfileState extends State<BuildProfile> {
                   height: 40,
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    await _adduser;
-                    _goToHome();
-                  },
+                  onPressed: _adduser,
                   style: ElevatedButton.styleFrom(
                     elevation: 25,
                     shape: RoundedRectangleBorder(
@@ -294,8 +290,9 @@ class _BuildProfileState extends State<BuildProfile> {
     }
   }
 
-  void _adduser() {
-    addUserDetails(_nameController.text.trim(), int.parse(_ageController.text),
-        widget.email, _selectedAvatar);
+  void _adduser() async {
+    await addUserDetails(_nameController.text.trim(),
+        int.parse(_ageController.text), widget.email, _selectedAvatar);
+    _goToHome();
   }
 }

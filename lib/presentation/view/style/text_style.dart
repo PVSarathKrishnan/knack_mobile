@@ -9,3 +9,14 @@ TextStyle text_style_h = GoogleFonts.poppins(
 TextStyle text_style_n = GoogleFonts.poppins(
   fontSize: 15,
 );
+
+
+  TextStyle DateTextStyle() => GoogleFonts.poppins(
+    fontSize: 12,fontWeight: FontWeight.w600, color: Colors.grey
+  );
+
+  TextStyle TimeTextStyle() {
+    return GoogleFonts.poppins(
+          fontSize: 10,
+        );
+  }
